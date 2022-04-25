@@ -23,6 +23,7 @@
 <bin file="YieldTable.cpp" name="YieldTable"></bin>
 <bin file="hzz4l.cpp" name="hzz4l"></bin>
 <bin file="haabbtt.cpp" name="haabbtt"></bin>
+<bin file="haabbtt-full.cpp" name="haabbtt-full"></bin>
 <use name="root"/>
 <use name="rootmath"/>
 <use name="roofit"/>

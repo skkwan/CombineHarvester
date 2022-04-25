@@ -20,7 +20,7 @@ scram b
 3. Copy the main code `haabbtt.cpp` to `CombineHarvester/CombineTools/bin/` and make sure `BuildFile.xml` is modified
    (these files I should have committed to the correct folders in my fork)
 
-4. Compile after every change:
+4. Compile after every change, in the `bin/` directory (if we are only changing `haabbtt.cpp`):
    `scram b -j 8`
 
 ## To run the example
