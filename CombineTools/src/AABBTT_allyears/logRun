@@ -1,0 +1,175 @@
+combine -M AsymptoticLimits haabbtt_mt_1_2018_45.txt -t -1 -m 45
+
+ <<< Combine >>> 
+>>> random number generator seed is 123456
+>>> method used is AsymptoticLimits
+Channel haabbtt_mt_1_2018 will use autoMCStats with settings: event-threshold=0, include-signal=0, hist-mode=1
+============================================================
+Analysing bin errors for: prop_binhaabbtt_mt_1_2018
+Poisson cut-off: 0
+Processes excluded for sums: vbfbbtt gghbbtt
+============================================================
+Bin        Contents        Error           Notes                         
+0          20299.844207    421.602039      total sum                     
+0          4813.896087     23.306215       excluding marked processes    
+0          42663.000000    206.550236      Unweighted events, alpha=0.475818
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin0[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+1          28368.515343    499.560731      total sum                     
+1          7063.257042     28.228262       excluding marked processes    
+1          62610.000000    250.219903      Unweighted events, alpha=0.453099
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin1[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+2          14244.352473    208.488432      total sum                     
+2          10565.494654    34.618288       excluding marked processes    
+2          93147.000000    305.199934      Unweighted events, alpha=0.152923
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin2[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+3          17121.506519    48.176122       total sum                     
+3          17082.319903    43.588137       excluding marked processes    
+3          153588.000000   391.903049      Unweighted events, alpha=0.111477
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin3[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+4          20906.804940    49.928529       total sum                     
+4          20880.840179    46.967202       excluding marked processes    
+4          197654.000000   444.582951      Unweighted events, alpha=0.105775
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin4[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+5          19645.207494    45.883177       total sum                     
+5          19642.452265    45.855037       excluding marked processes    
+5          183492.000000   428.359662      Unweighted events, alpha=0.107063
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin5[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+6          16279.123538    52.497165       total sum                     
+6          16275.421088    52.453558       excluding marked processes    
+6          96275.000000    310.282130      Unweighted events, alpha=0.169090
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin6[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+7          13843.168784    62.742435       total sum                     
+7          13827.617700    61.465362       excluding marked processes    
+7          50610.000000    224.966664      Unweighted events, alpha=0.273526
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin7[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+8          11244.772230    41.868907       total sum                     
+8          11212.702784    36.562322       excluding marked processes    
+8          94049.000000    306.674094      Unweighted events, alpha=0.119563
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin8[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+9          9244.794405     34.047388       total sum                     
+9          9230.872536     31.894754       excluding marked processes    
+9          83762.000000    289.416655      Unweighted events, alpha=0.110370
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin9[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+10         7611.747385     34.209037       total sum                     
+10         7588.817657     28.619218       excluding marked processes    
+10         70313.000000    265.165986      Unweighted events, alpha=0.108255
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin10[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+11         6224.382031     25.878279       total sum                     
+11         6223.199095     25.851228       excluding marked processes    
+11         57952.000000    240.732216      Unweighted events, alpha=0.107406
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin11[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+12         5067.144823     23.331881       total sum                     
+12         5065.068865     23.285284       excluding marked processes    
+12         47316.000000    217.522413      Unweighted events, alpha=0.107092
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin12[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+13         4142.351435     21.142346       total sum                     
+13         4141.436891     21.122557       excluding marked processes    
+13         38442.000000    196.066315      Unweighted events, alpha=0.107756
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin13[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+14         3392.015371     19.122514       total sum                     
+14         3391.173868     19.103989       excluding marked processes    
+14         31510.000000    177.510563      Unweighted events, alpha=0.107649
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin14[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+15         2753.779337     17.230306       total sum                     
+15         2753.779337     17.230306       excluding marked processes    
+15         25543.000000    159.821776      Unweighted events, alpha=0.107810
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin15[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+16         2272.089527     15.861467       total sum                     
+16         2266.878604     15.631481       excluding marked processes    
+16         21031.000000    145.020688      Unweighted events, alpha=0.108035
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin16[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+17         1867.771301     14.245899       total sum                     
+17         1866.706596     14.206057       excluding marked processes    
+17         17267.000000    131.403957      Unweighted events, alpha=0.108170
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin17[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+18         1500.652110     12.761840       total sum                     
+18         1499.646616     12.722168       excluding marked processes    
+18         13895.000000    117.877055      Unweighted events, alpha=0.107999
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin18[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+19         1243.165279     11.619169       total sum                     
+19         1242.058281     11.566315       excluding marked processes    
+19         11532.000000    107.387150      Unweighted events, alpha=0.107801
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin19[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+20         1037.950267     22.282672       total sum                     
+20         1010.209972     10.422758       excluding marked processes    
+20         9394.000000     96.922650       Unweighted events, alpha=0.110491
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin20[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+21         834.493558      9.533211        total sum                     
+21         834.493558      9.533211        excluding marked processes    
+21         7662.000000     87.532851       Unweighted events, alpha=0.108913
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin21[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+22         701.498020      8.773528        total sum                     
+22         701.498020      8.773528        excluding marked processes    
+22         6393.000000     79.956238       Unweighted events, alpha=0.109729
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin22[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+23         565.926802      7.865014        total sum                     
+23         565.926802      7.865014        excluding marked processes    
+23         5178.000000     71.958321       Unweighted events, alpha=0.109294
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin23[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+24         471.197872      7.194197        total sum                     
+24         471.197872      7.194197        excluding marked processes    
+24         4290.000000     65.498092       Unweighted events, alpha=0.109836
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin24[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+25         404.936608      6.762328        total sum                     
+25         404.936608      6.762328        excluding marked processes    
+25         3586.000000     59.883220       Unweighted events, alpha=0.112922
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin25[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+26         325.792737      5.995907        total sum                     
+26         325.792737      5.995907        excluding marked processes    
+26         2952.000000     54.332311       Unweighted events, alpha=0.110363
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin26[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+27         270.783801      5.549901        total sum                     
+27         269.641639      5.431102        excluding marked processes    
+27         2465.000000     49.648766       Unweighted events, alpha=0.109851
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin27[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+28         234.645759      5.090275        total sum                     
+28         234.645759      5.090275        excluding marked processes    
+28         2125.000000     46.097722       Unweighted events, alpha=0.110422
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin28[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+29         185.958779      4.480745        total sum                     
+29         185.958779      4.480745        excluding marked processes    
+29         1722.000000     41.496988       Unweighted events, alpha=0.107990
+  => Total parameter prop_binhaabbtt_mt_1_2018_bin29[0.00,-7.00,7.00] to be gaussian constrained
+------------------------------------------------------------
+SimNLL created with 1 channels, 0 generic constraints, 42 fast gaussian constraints, 0 fast poisson constraints, 0 fast group constraints, 
+SimNLL created with 1 channels, 0 generic constraints, 42 fast gaussian constraints, 0 fast poisson constraints, 0 fast group constraints, 
+SimNLL created with 1 channels, 0 generic constraints, 42 fast gaussian constraints, 0 fast poisson constraints, 0 fast group constraints, 
+
+ -- AsymptoticLimits ( CLs ) --
+Observed Limit: r < 0.0063
+Expected  2.5%: r < 0.0036
+Expected 16.0%: r < 0.0046
+Expected 50.0%: r < 0.0063
+Expected 84.0%: r < 0.0092
+Expected 97.5%: r < 0.0120
+
+Done in 0.01 min (cpu), 0.01 min (real)
