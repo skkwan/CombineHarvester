@@ -82,13 +82,14 @@ int main(int argc, char** argv) {
   std::string channel = *(argv + 1);
   std::string year = *(argv + 2);
   std::string ncats = *(argv + 3);
+
     
   // Take category names from inputs
-  cout << "Categories for " << channel << " " << year << ":" << endl;
+  cout << "Categories for channel and year: " << channel << " " << year << ":" << endl;
   std::vector<std::pair<int, std::string>> cats = {};
   for (int i = 1; i <= stoi(ncats); i++) {
     cats.push_back({i, *(argv + 3 + i)});
-    cout << cats[i-1].first << ": " << cats[i-1].second << endl;
+    cout << "Categories are: " << cats[i-1].first << ": " << cats[i-1].second << endl;
   }
     
   // Where the datacard is stored
@@ -99,9 +100,9 @@ int main(int argc, char** argv) {
   // cb.SetVerbosity(3);
     
   // List of categories (also called 'bins' in Combine)
-  //ch::Categories cats = {
+  // ch::Categories cats = {
   //    {1, "1"},
-  //};
+  // };
      
   // List of mass points for the signal, the masses are added at the end of the signal string names
   //vector<string> masses = {"12","15","20","25","30","35","40","45","50","55","60"};
@@ -405,12 +406,10 @@ int main(int argc, char** argv) {
     // Name of the input datacard
     // The ExtractShapes method supports {$BIN, $PROCESS, $MASS, $SYSTEMATIC}
     cb.cp().backgrounds().ExtractShapes(
-					//                                        aux_shapes + "final_"+channel+"_"+year+".root",
 					aux_shapes + "test_"+channel+"_"+year+".root",
                                         "$BIN/$PROCESS",
                                         "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
-                                    // aux_shapes + "final_"+channel+"_"+year+".root",
 				    aux_shapes + "test_"+channel+"_"+year+".root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
@@ -423,9 +422,8 @@ int main(int argc, char** argv) {
     
     for (auto b : bins) {
       for (auto m : masses) {
-	cout << ">> Writing datacard for bin: " << b << " and mass: " << m
-	     << "\n";
-	cb.cp().bin({b}).mass({m, "*"}).WriteDatacard(b + "_" + m + ".txt", output);
+	      cout << ">> Writing datacard for bin: " << b << " and mass: " << m  << "\n";
+	      cb.cp().bin({b}).mass({m, "*"}).WriteDatacard(b + "_" + m + ".txt", output);
       }
     }
     
