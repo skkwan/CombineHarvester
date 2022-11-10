@@ -15,32 +15,36 @@ git clone https://github.com/cms-analysis/CombineHarvester.git CombineHarvester
 scram b
 ```
 
-2. In `CombineHarvester/CombineTools/src`, mkdir `auxiliaries/shapes` and store final root files there.
-
-3. Copy the main code `haabbtt.cpp` to `CombineHarvester/CombineTools/bin/haabbtt-full.cpp` and make sure `BuildFile.xml` is modified
+2. Copy the main code `haabbtt.cpp` to `CombineHarvester/CombineTools/bin/haabbtt-full.cpp` and make sure `BuildFile.xml` is modified
    (these files I should have committed to the correct folders in my fork). 
 
    I called the original example `haabbtt-full.cpp` (compiling to the `haabbtt-full` executable) and my work in progress version 
    `haabbtt.cpp` (compiling to the `haabbtt` executable).
 
-4. Compile after every change, in the `bin/` directory (if we are only changing `haabbtt.cpp` or `haabbtt-full.cpp`):
+3. Compile after every change, in the `bin/` directory (if we are only changing `haabbtt.cpp` or `haabbtt-full.cpp`):
    `scram b -j 8`
 
 ## To run the example
-1. For the example from HF with all channels, years, 
+1. Make sure your histogram `.root` files are copied to
+   `/afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_10_2_13/src/auxiliaries/shapes/`.
+2. For the example from HF with all channels, years, 
 
    ```
-   # Go to the working directory:
+   # Go to the CMSSW_10_2_13/src/CombineHarvester/CombineTools working directory:
+   cd /afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_10_2_13/src/CombineHarvester/CombineTools/src
+   cmsenv
    cd AABBTT_allyears/
    haabbtt-full mt 2018 7 1 2 3 4 5 6 7
    ```
 
    In the root file, directories 1 2 3 4 are SR1 SR2 SR3 CR finale m(tt) from 1bjet events after DNN cuts; 5 6 7 are SR1 SR2 CR from 2bjets.
 
-   For my work in progress version with only mu-tau and one category, and using only one mass point 45 GeV:
+   For my work in progress version with only mu-tau and seven categories, and using only one mass point 45 GeV:
    ```
+   cd /afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_10_2_13/src/CombineHarvester/CombineTools/src
+   cmsenv
    cd AABBTT_allyears/
-   haabbtt mt 2018 1 cat1 
+   haabbtt mt 2018 7 b1_sr1 b1_sr2 b1_sr3 b1_cr b2_sr1 b2_sr2 b2_cr
    ```
 
 2. Add statistical uncertainties for the backgrounds: 
