@@ -61,6 +61,7 @@ git rebase upstream-v2.0.0
 ## To run the example
 1. Make sure your histogram `.root` files are copied to
    `/afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_11_3_4/src/auxiliaries/shapes/`.
+   The file should have the categories as the top-level folder. The histograms for the variable to fit, should be named like `data_obs`, not `data_obs_m_sv`.
 
 2. For the example from HF with all channels, years, with a root file containing directories 1 2 3 4 are SR1 SR2 SR3 CR finale m(tt) from 1bjet events after DNN cuts; 5 6 7 are SR1 SR2 CR from 2bjets.
    ```bash
@@ -74,14 +75,40 @@ git rebase upstream-v2.0.0
    ```bash
    cd /afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_11_3_4/src/CombineHarvester/CombineTools/src/AABBTT_allyears
    cmsenv
-   haabbtt mt 2018 4 lowMassSR mediumMassSR highMassSR highMassCR
+   haabbtt mutau 2018 4 lowMassSR mediumMassSR highMassSR highMassCR
    ```
 
+   This makes a bunch of text files.
+
 2. Add statistical uncertainties for the backgrounds: 
-   `echo "* autoMCStats 0.0" >> haabbtt_em_1_2016_40.txt`
+   `echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_45.txt`
 
 3. Compute the expected limit (-t -1 means expected, blinded): 
-   `combine -M AsymptoticLimits haabbtt_em_1_2016_40.txt -t -1 -m 40`
+   `combine -M AsymptoticLimits haabbtt_mutau_1_2018_45.txt -t -1 -m 45`
+
+   This gives something like
+   ```bash
+    -- AsymptoticLimits ( CLs ) --
+   Observed Limit: r < 0.0022
+   Expected  2.5%: r < 0.0009
+   Expected 16.0%: r < 0.0013
+   Expected 50.0%: r < 0.0024
+   Expected 84.0%: r < 0.0034
+   Expected 97.5%: r < 0.0046
+   ```
 
 4. If you want to combine several categories, make a combined txt file:
-   `combineCards.py haabbtt_em_1_2016_40.txt haabbtt_em_2_2016_40.txt > combined_em_2016_40.txt` 
+   `combineCards.py haabbtt_mutau_1_2018_45.txt haabbtt_mutau_2_2018_45.txt haabbtt_mutau_3_2018_45.txt > combined_mutau_2018_45.txt` 
+
+   `combine -M AsymptoticLimits combined_mutau_2018_45.txt -t -1 -m 45`
+
+   This gives something like
+   ```bash
+   -- AsymptoticLimits ( CLs ) --
+   Observed Limit: r < 0.0021
+   Expected  2.5%: r < 0.0009
+   Expected 16.0%: r < 0.0013
+   Expected 50.0%: r < 0.0024
+   Expected 84.0%: r < 0.0034
+   Expected 97.5%: r < 0.0041
+   ```
