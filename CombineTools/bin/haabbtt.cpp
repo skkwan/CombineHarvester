@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     
   ch::CombineHarvester cb;
   // Uncomment this next line to see a *lot* of debug information
-  // cb.SetVerbosity(3);
+  cb.SetVerbosity(3);
     
   // List of categories (also called 'bins' in Combine)
   // ch::Categories cats = {
@@ -113,7 +113,7 @@ int main(int argc, char** argv) {
     
   // List of backgrounds in the datacards
   vector<string> bkg_procs = {"ttbar","ZJ","ST","VV","ggh_htt","ggh_hww","qqh_htt","qqh_hww","Zh_htt","Zh_hww","Wh_htt","Wh_hww","tth"};
-  if (channel=="em") bkg_procs.push_back("WJ");
+  if (channel=="emu") bkg_procs.push_back("WJ");
     
   vector<string> bkg_procs_noEMB_nofake = bkg_procs;
 
@@ -126,14 +126,14 @@ int main(int argc, char** argv) {
   vector<string> sig_procs = {"gghbbtt","vbfbbtt"};
   cb.AddProcesses(masses, {"haabbtt"}, {year}, {channel}, sig_procs, cats, true);
     
-  //vector<string> sig_ggh = {"gghbbtt12","gghbbtt15","gghbbtt20","gghbbtt25","gghbbtt30","gghbbtt35","gghbbtt40","gghbbtt45","gghbbtt50","gghbbtt55","gghbbtt60"};
-  //vector<string> sig_vbf = {"vbfbbtt12","vbfbbtt15","vbfbbtt20","vbfbbtt25","vbfbbtt30","vbfbbtt35","vbfbbtt40","vbfbbtt45","vbfbbtt50","vbfbbtt55","vbfbbtt60"};
-  //if (channel=="em" /*or channel=="et" or channel=="mt"*/){
+  // vector<string> sig_ggh = {"gghbbtt_12","gghbbtt_15","gghbbtt_20","gghbbtt_25","gghbbtt_30","gghbbtt_35","gghbbtt_40","gghbbtt_45","gghbbtt_50","gghbbtt_55","gghbbtt_60"};
+  // vector<string> sig_vbf = {"vbfbbtt_12","vbfbbtt_15","vbfbbtt_20","vbfbbtt_25","vbfbbtt_30","vbfbbtt_35","vbfbbtt_40","vbfbbtt_45","vbfbbtt_50","vbfbbtt_55","vbfbbtt_60"};
+  // if (channel=="emu" /*or channel=="etau" or channel=="mutau"*/){
   //    sig_ggh.push_back("gghbbtt12");
   //    sig_vbf.push_back("vbfbbtt12");
-  //}
-  vector<string> sig_ggh = {"gghbbtt45"};
-  vector<string> sig_vbf = {"vbfbbtt45"};
+  // }
+  vector<string> sig_ggh = {"gghbbtt"};
+  vector<string> sig_vbf = {"vbfbbtt"};
     
   using ch::syst::SystMap;
   using ch::syst::era;
@@ -168,7 +168,7 @@ int main(int argc, char** argv) {
     cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "lumi_13TeV_correlated17-18", "lnN", SystMap<>::init(1.002));
   }
     
-  // if (channel=="em"){
+  // if (channel=="emu"){
   //   cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_eleID_13TeV", "lnN", SystMap<>::init(1.02));
   //   cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.02));
   //   // eleID 50% correlated with MC
@@ -181,7 +181,7 @@ int main(int argc, char** argv) {
   //   cb.cp().process({"fake"}).AddSyst(cb, "CMS_normalization_qcd_13TeV", "lnN", SystMap<>::init(1.20));
   // }
     
-  // if (channel=="et"){
+  // if (channel=="etau"){
   //   cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_eleID_13TeV", "lnN", SystMap<>::init(1.02));
   //   // eleID 50% correlated with MC
   //   cb.cp().process({"embedded"}).AddSyst(cb, "CMS_eleID_13TeV", "lnN", SystMap<>::init(1.01));
@@ -190,7 +190,7 @@ int main(int argc, char** argv) {
   //   cb.cp().process({"fake"}).AddSyst(cb, "CMS_normalization_fake_13TeV", "lnN", SystMap<>::init(1.20));
   // }
     
-  // if (channel=="mt"){
+  // if (channel=="mutau"){
   //   cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.02));
   //   // muID 50% correlated with MC
   //   cb.cp().process({"embedded"}).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.01));
@@ -218,18 +218,18 @@ int main(int argc, char** argv) {
   // addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_btagsf_cferr2", 1.00);
     
   // // Trigger efficiency
-  // if (channel=="et" or channel=="mt"){
+  // if (channel=="etau" or channel=="mutau"){
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_trgeff_single_"+channel+"_"+year, 1.00);
   //   // 50% correlated with MC
   //   addshapes(&cb, file, cats, {"embedded"}, "CMS_trgeff_single_"+channel+"_"+year, 0.50);// 1.00 * 50%
   //   addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_trgeff_single_"+channel+"_"+year, 0.866);// 1.00 * sqrt(1-50%^2)
-  //   if (channel=="mt" or (channel=="et" && year!="2016")){
+  //   if (channel=="mutau" or (channel=="etau" && year!="2016")){
   //     addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_trgeff_cross_"+channel+"_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"embedded"}, "CMS_trgeff_cross_"+channel+"_"+year, 0.50);
   //     addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_trgeff_cross_"+channel+"_"+year, 0.866);
   //   }
   // }
-  // if (channel=="em"){
+  // if (channel=="emu"){
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_trgeff_Mu8E23_"+channel+"_"+year, 1.00);
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_trgeff_Mu23E12_"+channel+"_"+year, 1.00);
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_trgeff_both_"+channel+"_"+year, 1.00);
@@ -243,7 +243,7 @@ int main(int argc, char** argv) {
   // }
     
   // // tau related corrections, no fake bkg
-  // if (channel=="et" or channel=="mt"){
+  // if (channel=="etau" or channel=="mutau"){
   //   // tau ID efficiency (VSjet)
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,sig_ggh,sig_vbf}), "CMS_tauideff_pt20to25_"+year, 1.00);
   //   addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,sig_ggh,sig_vbf}), "CMS_tauideff_pt25to30_"+year, 1.00);
@@ -305,21 +305,21 @@ int main(int argc, char** argv) {
   //   }
     
   //   // Tau ID efficiency with different WP than used in measurement, for e+tau only
-  //   if (channel=="et"){
+  //   if (channel=="etau"){
   //       addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,sig_ggh,sig_vbf}), "CMS_tauidWP_et_"+year, 1.00);
   //       addshapes(&cb, file, cats, {"embedded"}, "CMS_tauidWP_et_"+year, 0.50);
   //       addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_tauidWP_et_"+year, 0.866);
   //   }
     
   //   // Leptons ES (MC and embedded are fully uncorrelated)
-  //   if (channel=="et" or channel=="em"){
+  //   if (channel=="etau" or channel=="emu"){
   //       // ele ES
   //       addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_eleES_bar_"+year, 1.00);
   //       addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_eleES_end_"+year, 1.00);
   //       addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_eleES_bar_"+year, 1.00);
   //       addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_eleES_end_"+year, 1.00);
   //   }
-  //   if (channel=="mt" or channel=="em"){
+  //   if (channel=="mutau" or channel=="emu"){
   //       // mu ES
   //       addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_muES_eta0to1p2_"+year, 1.00);
   //       addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_muES_eta1p2to2p1_"+year, 1.00);
@@ -345,7 +345,7 @@ int main(int argc, char** argv) {
     
   //   // recoil correction, for Z+jets, W+jets, ggh and qqh (no W+jets in e+tau and mu+tau)
   //   // UES uncertainties, for MC without recoil correction
-  //   if (channel=="et" or channel=="mt"){
+  //   if (channel=="etau" or channel=="mutau"){
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_0j_resolution_"+year, 1.00);
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_0j_response_"+year, 1.00);
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_1j_resolution_"+year, 1.00);
@@ -354,7 +354,7 @@ int main(int argc, char** argv) {
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_gt1j_response_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"ttbar","ST","VV","Zh_htt","Zh_hww","Wh_htt","Wh_hww","tth","fake"}, "CMS_UES_"+year, 1.00);
   //   }
-  //   if (channel=="em"){
+  //   if (channel=="emu"){
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","WJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_0j_resolution_"+year, 1.00);
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","WJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_0j_response_"+year, 1.00);
   //     addshapes(&cb, file, cats, JoinStr({{"ZJ","WJ","ggh_htt","ggh_hww","qqh_htt","qqh_hww","fake"},sig_ggh,sig_vbf}), "CMS_1j_resolution_"+year, 1.00);
@@ -371,7 +371,7 @@ int main(int argc, char** argv) {
   //   //addshapes(&cb, file, cats, {"ttbar","fake"}, "CMS_toppt_"+year, 1.00);
     
   //   // tau tracking efficiency in embedded (on real tauh, no effect on fake bkg)
-  //   if (channel=="et" or channel=="mt"){
+  //   if (channel=="etau" or channel=="mutau"){
   //     addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_tautrack_dm0dm10_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_tautrack_dm1_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"embedded"}, "CMS_EMB_tautrack_dm11_"+year, 1.00);
@@ -381,7 +381,7 @@ int main(int argc, char** argv) {
   //   addshapes(&cb, file, cats, {"embedded"}, "CMS_nonDY_"+year, 1.00);
     
   //   // Reducible background estimation
-  //   if (channel=="et" or channel=="mt"){
+  //   if (channel=="etau" or channel=="mutau"){
   //     // fake factor for cross triggered events
   //     addshapes(&cb, file, cats, {"fake"}, "CMS_crosstrg_fakefactor_"+year, 1.00);
   //     // fake rate measurement
@@ -393,7 +393,7 @@ int main(int argc, char** argv) {
   //     addshapes(&cb, file, cats, {"fake"}, "CMS_jetFR_pt50to60_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"fake"}, "CMS_jetFR_ptgt60_"+year, 1.00);
   //   }
-  //   if (channel=="em"){
+  //   if (channel=="emu"){
   //     // SS correction and closure
   //     addshapes(&cb, file, cats, {"fake"}, "CMS_SScorrection_"+year, 1.00);
   //     addshapes(&cb, file, cats, {"fake"}, "CMS_SSclosure_"+year, 1.00);
