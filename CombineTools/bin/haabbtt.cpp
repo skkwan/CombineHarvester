@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
      
   // List of mass points for the signal, the masses are added at the end of the signal string names
   //vector<string> masses = {"12","15","20","25","30","35","40","45","50","55","60"};
-  vector<string> masses = {"45"};
+  vector<string> masses = {"40", "45"};
     
   // Observed data (name must be "data_obs" in datacards)
   cb.AddObservations({"*"}, {"haabbtt"}, {year}, {channel}, cats);
