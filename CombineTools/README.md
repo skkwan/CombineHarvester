@@ -81,10 +81,17 @@ git rebase upstream-v2.0.0
    This makes a bunch of text files.
 
 2. Add statistical uncertainties for the backgrounds: 
-   `echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_45.txt`
+   ```bash
+   echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_45.txt
+   echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_40.txt
+   ```
+
 
 3. Compute the expected limit (-t -1 means expected, blinded): 
-   `combine -M AsymptoticLimits haabbtt_mutau_1_2018_45.txt -t -1 -m 45`
+   ```bash
+   combine -M AsymptoticLimits haabbtt_mutau_1_2018_40.txt -t -1 -m 40
+   combine -M AsymptoticLimits haabbtt_mutau_1_2018_45.txt -t -1 -m 45
+   ```
 
    This gives something like
    ```bash
