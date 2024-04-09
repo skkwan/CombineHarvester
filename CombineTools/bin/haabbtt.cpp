@@ -104,9 +104,9 @@ int main(int argc, char** argv) {
   //    {1, "1"},
   // };
      
-  // List of mass points for the signal, the masses are added at the end of the signal string names
-  //vector<string> masses = {"12","15","20","25","30","35","40","45","50","55","60"};
-  vector<string> masses = {"40", "45"};
+  // List of mass points for the signal, the masses are added at the end of the signal string names. Commented out 12 for now
+  vector<string> masses = {"15","20","25","30","35","40","45","50","55","60"};
+  // vector<string> masses = {"40", "45"}; 
     
   // Observed data (name must be "data_obs" in datacards)
   cb.AddObservations({"*"}, {"haabbtt"}, {year}, {channel}, cats);
@@ -126,14 +126,13 @@ int main(int argc, char** argv) {
   vector<string> sig_procs = {"gghbbtt","vbfbbtt"};
   cb.AddProcesses(masses, {"haabbtt"}, {year}, {channel}, sig_procs, cats, true);
     
-  // vector<string> sig_ggh = {"gghbbtt_12","gghbbtt_15","gghbbtt_20","gghbbtt_25","gghbbtt_30","gghbbtt_35","gghbbtt_40","gghbbtt_45","gghbbtt_50","gghbbtt_55","gghbbtt_60"};
-  // vector<string> sig_vbf = {"vbfbbtt_12","vbfbbtt_15","vbfbbtt_20","vbfbbtt_25","vbfbbtt_30","vbfbbtt_35","vbfbbtt_40","vbfbbtt_45","vbfbbtt_50","vbfbbtt_55","vbfbbtt_60"};
-  // if (channel=="emu" /*or channel=="etau" or channel=="mutau"*/){
+  // commented out 12 for now
+  vector<string> sig_ggh = {"gghbbtt15"};//,"gghbbtt20","gghbbtt25","gghbbtt30","gghbbtt35","gghbbtt40","gghbbtt45","gghbbtt50","gghbbtt55","gghbbtt60"};
+  vector<string> sig_vbf = {"vbfbbtt15"};//,"vbfbbtt20","vbfbbtt25","vbfbbtt30","vbfbbtt35","vbfbbtt40","vbfbbtt45","vbfbbtt50","vbfbbtt55","vbfbbtt60"};
+  //if (channel=="em" /*or channel=="et" or channel=="mt"*/){
   //    sig_ggh.push_back("gghbbtt12");
   //    sig_vbf.push_back("vbfbbtt12");
-  // }
-  vector<string> sig_ggh = {"gghbbtt45"};
-  vector<string> sig_vbf = {"vbfbbtt45"};
+  //}
     
   using ch::syst::SystMap;
   using ch::syst::era;
@@ -203,7 +202,7 @@ int main(int argc, char** argv) {
   // // The AddSyst method supports {$BIN, $PROCESS, $MASS, $ERA, $CHANNEL, $ANALYSIS}
     
   TFile* file;
-  file = new TFile((aux_shapes+"test_"+channel+"_"+year+".root").c_str());// To be used for the addshapes function
+  file = new TFile((aux_shapes+"out_"+channel+".root").c_str());// To be used for the addshapes function
     
   // // btagging efficiency, no embedded
   // //addshapes(&cb, file, cats, JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf}), "CMS_btagsf_heavy_"+year, 1.00);
@@ -406,11 +405,11 @@ int main(int argc, char** argv) {
     // Name of the input datacard
     // The ExtractShapes method supports {$BIN, $PROCESS, $MASS, $SYSTEMATIC}
     cb.cp().backgrounds().ExtractShapes(
-					aux_shapes + "test_"+channel+"_"+year+".root",
+					aux_shapes + "out_"+channel+".root",
                                         "$BIN/$PROCESS",
                                         "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
-				    aux_shapes + "test_"+channel+"_"+year+".root",
+				    aux_shapes + "out_"+channel+".root",
                                     "$BIN/$PROCESS$MASS",
                                     "$BIN/$PROCESS$MASS_$SYSTEMATIC");
     
@@ -418,7 +417,7 @@ int main(int argc, char** argv) {
     
     set<string> bins = cb.bin_set();
     
-    TFile output(("haabbtt"+year+"_"+channel+".input.root").c_str(), "RECREATE");
+    TFile output(("haabbtt"+year+"_"+channel+"_"+year+".input.root").c_str(), "RECREATE");
     
     for (auto b : bins) {
       for (auto m : masses) {
