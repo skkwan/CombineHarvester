@@ -24,3 +24,6 @@ __init__.py
 docs/html
 
 *~
+
+limits_*
+*.txt
