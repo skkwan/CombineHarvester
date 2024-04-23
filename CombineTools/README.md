@@ -119,3 +119,39 @@ git rebase upstream-v2.0.0
    Expected 84.0%: r < 0.0034
    Expected 97.5%: r < 0.0041
    ```
+
+## Troubleshooting
+
+Using [FitDiagnostics](http://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/):
+
+```bash
+# Inside the cards/ directory
+cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools/cards/
+combine -M FitDiagnostics haabbtt_mutau_3_2018_60.txt -m 60
+
+# Up one directory
+cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
+combine -M FitDiagnostics cards/combined_mutau_2018_60.txt -t -1 -m 60 
+```
+
+Using `diffNuisances.py`:
+```bash
+python diffNuisances.py fitDiagnosticsTest.root
+```
+
+## Multi-dimensional fit for debugging
+```bash
+python3 doMultiDimFit.py
+```
+
+## Pulls and impacts
+```bash
+python3 doImpacts.py
+```
+
+## Post-fit distributions
+
+```bash
+python3 getPostFitDistributions.py
+```
+makes `postfitShapes_a1a2_100_15.root`. Need to put this into data/MC.
