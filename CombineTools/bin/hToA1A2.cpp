@@ -111,8 +111,8 @@ int main(int argc, char** argv) {
   cb.AddObservations({"*"}, {"hToA1A2"}, {year}, {channel}, cats);
     
   // List of backgrounds in the datacards
-  vector<string> bkg_procs = {"ttbar","ZJ","ST","VV","ggh_htt","ggh_hww","qqh_htt","qqh_hww","Zh_htt","Zh_hww","Wh_htt","Wh_hww","tth"};
-  if (channel=="emu") bkg_procs.push_back("WJ");
+  vector<string> bkg_procs = {"ttbar","ZJ","WJ","ST","VV","ggh_htt","ggh_hww","qqh_htt","qqh_hww","Zh_htt","Zh_hww","Wh_htt","Wh_hww","tth"};
+  // if (channel=="emu") bkg_procs.push_back("WJ");
     
   vector<string> bkg_procs_noEMB_nofake = bkg_procs;
 
