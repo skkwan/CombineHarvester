@@ -139,6 +139,9 @@ Using `diffNuisances.py`:
 python diffNuisances.py fitDiagnosticsTest.root
 ```
 
+## Datacard validation
+TODO:
+
 ## Multi-dimensional fit for debugging
 ```bash
 python3 doMultiDimFit.py
@@ -155,3 +158,21 @@ python3 doImpacts.py
 python3 getPostFitDistributions.py
 ```
 makes `postfitShapes_a1a2_100_15.root`. Need to put this into data/MC.
+
+## For thesis endorsement
+1. `python3 makeAsymmCards.py` to make limits for limit plots for each set of mass points.
+2. `python3 doImpacts.py` for one mass point to get impacts.
+3. (Can be done in parallel with the previous step) `python3 getPostFitDistributions.py` for one mass point, to run FitDiagnostics to save shapes and get a RooFitResult, and run PostFitShapesFromWorkspace on the results to get pre-fit and post-fit distributions.
+   ```bash
+   root -l postfitShapes_a1a2_60_20.root
+   root [1] .ls
+   TFile**         postfitShapes_a1a2_60_20.root
+   TFile*         postfitShapes_a1a2_60_20.root
+   KEY: TDirectoryFile   ch1_prefit;1    ch1_prefit
+   KEY: TDirectoryFile   ch2_prefit;1    ch2_prefit
+   KEY: TDirectoryFile   ch3_prefit;1    ch3_prefit
+   KEY: TDirectoryFile   ch1_postfit;1   ch1_postfit
+   KEY: TDirectoryFile   ch2_postfit;1   ch2_postfit
+   KEY: TDirectoryFile   ch3_postfit;1   ch3_postfit
+   ```
+4. TODO: Plot the post-fit distributions.
