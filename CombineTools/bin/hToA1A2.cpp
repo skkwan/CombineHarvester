@@ -187,14 +187,16 @@ int main(int argc, char** argv) {
   //   cb.cp().process({"fake"}).AddSyst(cb, "CMS_normalization_fake_13TeV", "lnN", SystMap<>::init(1.20));
   // }
     
-  // if (channel=="mutau"){
-  //   cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.02));
-  //   // muID 50% correlated with MC
-  //   cb.cp().process({"embedded"}).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.01));
-  //   cb.cp().process({"embedded"}).AddSyst(cb, "CMS_EMB_muID_13TeV", "lnN", SystMap<>::init(1.01732));
+  if (channel=="mutau"){
+    // cb.cp().process(JoinStr({bkg_procs_noEMB_nofake,{"fake"},sig_ggh,sig_vbf})).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.02));
+    // // muID 50% correlated with MC
+    // cb.cp().process({"embedded"}).AddSyst(cb, "CMS_muID_13TeV", "lnN", SystMap<>::init(1.01));
+    // cb.cp().process({"embedded"}).AddSyst(cb, "CMS_EMB_muID_13TeV", "lnN", SystMap<>::init(1.01732));
         
-  //   cb.cp().process({"fake"}).AddSyst(cb, "CMS_normalization_fake_13TeV", "lnN", SystMap<>::init(1.20));
-  // }
+    cb.cp().process({"fake"}).AddSyst(cb, "CMS_normalization_fake_13TeV", "lnN", SystMap<>::init(1.20));
+  }
+  // Account for differences in pre-UL and UL corrections 
+  cb.cp().process(JoinStr({bkg_procs_noEMB_nofake, {"embedded", "fake"}, sig_ggh, sig_vbf})).AddSyst(cb, "CMS_SUS24005_preUL", "lnN", SystMap<>::init(1.05));
     
   // // =========================== Shape uncertainties ===========================
   // // The AddSyst method supports {$BIN, $PROCESS, $MASS, $ERA, $CHANNEL, $ANALYSIS}
