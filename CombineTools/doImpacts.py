@@ -13,3 +13,5 @@ os.system('combineTool.py -M Impacts -d asymmCards/combined_mutau_2018_60_20.roo
 os.system('combineTool.py -M Impacts -d asymmCards/combined_mutau_2018_60_20.root -m 60 -o impacts.json')
 
 os.system('plotImpacts.py -i impacts.json -o impacts_60_20')
+
+os.system('cp impacts_60_20.pdf /eos/user/s/skkwan/www/limits/')

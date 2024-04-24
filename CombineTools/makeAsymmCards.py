@@ -6,11 +6,11 @@ os.system("ulimit -s unlimited")
 
 # assuming lightest scalar is 15 GeV
 allMasses = [  # assuming lightest scalar is 15 GeV, 
-              [[40, 15], [60, 15], [80, 15], [100, 15]],
+             [[40, 15], [60, 15], [80, 15], [100, 15]],
                # next, assuming lightest scalar is 20 GeV
-               # [[40, 20], [60, 20], [80, 20], [100, 20]], 
+            # [[40, 20], [60, 20], [80, 20], [100, 20]], 
             # #   # lastly, 30 GeV
-            #    [[60, 30], [80, 30]]
+            #   [[60, 30], [80, 30]]
 ]
 
 for massList in allMasses:
