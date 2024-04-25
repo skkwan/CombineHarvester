@@ -175,4 +175,5 @@ makes `postfitShapes_a1a2_100_15.root`. Need to put this into data/MC.
    KEY: TDirectoryFile   ch2_postfit;1   ch2_postfit
    KEY: TDirectoryFile   ch3_postfit;1   ch3_postfit
    ```
-4. TODO: Plot the post-fit distributions.
+4. Plot the post-fit distributions. Copy `postfitShapes_a1a2_60_20.root` to `/eos/user/s/skkwan/www/limits`, and in the LUNA repository in `dataMCPlots/`, run `bash runPostfitPlots.sh`.
+5. Make the goodness of fit data, toys, and plot: `python3 doGoodnessOfFit.py`
