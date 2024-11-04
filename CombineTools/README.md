@@ -36,133 +36,81 @@ Singularity> git remote rename origin upstream
 Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbtt.git
 ```
 
-3. (Not applicable to anyone except past me) I ran these steps because I had an older branch from the `lxplus7` days with changes that I wanted to keep, instead of starting from scratch.
-I made `v2.0.0` from the upstream its own branch:
-```bash
-git checkout v2.0.0
-git switch -c upstream-v2.0.0
-```
-And rebased my older development branch on top of `v2.0.0`.
-```bash
-git checkout devel-thesisEndorsement
-git rebase upstream-v2.0.0
-```
+## To run Combine 
+1. The main `C++` executable is in `${CMSSW_BASE}/src/CombineHarvester/CombineTools/bin/hToA1A2.cpp`. Note that `BuildFile.xml` must include the line `<bin file="hToA1A2.cpp" name="hToA1A2"></bin>` to build the executable. The input file directory is also specified inside `hToA1A2.cpp`.
 
-## Development 
-1. Copy the main code `haabbtt.cpp` to `CombineHarvester/CombineTools/bin/haabbtt-full.cpp` and make sure `BuildFile.xml` is modified
-   (these files I should have committed to the correct folders in my fork). 
+   The HIG-22-007 h->aa->2b2tau executable lives at `haabbtt-full.cpp` in the same directory.
 
-   I called the original example `haabbtt-full.cpp` (compiling to the `haabbtt-full` executable) and my work in progress version 
-   `haabbtt.cpp` (compiling to the `haabbtt` executable).
-
-2. Compile after every change, in the `bin/` directory (if we are only changing `haabbtt.cpp` or `haabbtt-full.cpp`):
-   `scram b -j 8`
-
-## To run the example
-1. Make sure your histogram `.root` files are copied to
-   `/afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_11_3_4/src/auxiliaries/shapes/`.
-   The file should have the categories as the top-level folder. The histograms for the variable to fit, should be named like `data_obs`, not `data_obs_m_sv`.
-
-2. For the example from HF with all channels, years, with a root file containing directories 1 2 3 4 are SR1 SR2 SR3 CR finale m(tt) from 1bjet events after DNN cuts; 5 6 7 are SR1 SR2 CR from 2bjets.
+2. After every change, make sure we compile the executables afresh. Make sure `cmssw-el7` is activated:
    ```bash
-   # Go to the CMSSW_10_2_13/src/CombineHarvester/CombineTools working directory:
-   /afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_11_3_4/src/CombineHarvester/CombineTools/src/AABBTT_allyears
-   cmsenv
-   haabbtt-full mt 2018 7 1 2 3 4 5 6 7
+   [skkwan@lxplus909 bin]$ cmssw-el7 
+   Singularity> cmsenv
+   ```
+   Then compile from the top-level directory:
+   ```bash
+   Singularity> cd ${CMSSW_BASE}/src
+   Singularity> scram b -j 8
+   ```
+3. Make sure the histogram `out_mutau.root`, `out_etau.root`, etc. files are copied to `${CMSSW_BASE}/src/auxiliaries/shapes/`. With the LUNA framework, this file is the one produced from `runStackPlots.sh`. 
+   The file should have the categories as the top-level folder. The histograms for the variable to fit, should be named like `data_obs`, not `data_obs_m_sv`. For example, this is what one file should look like:
+
+   ```bash
+   [skkwan@lxplus909 shapes]$ root -l out_etau.root
+   root [0] 
+   Attaching file out_etau.root as _file0...
+   (TFile *) 0x55f8dca1eef0
+   root [1] .ls
+   TFile**         out_etau.root
+   TFile*         out_etau.root
+   KEY: TDirectoryFile   inclusive;1     inclusive
+   KEY: TDirectoryFile   lowMassSR;1     lowMassSR
+   KEY: TDirectoryFile   mediumMassSR;1  mediumMassSR
+   KEY: TDirectoryFile   highMassSR;1    highMassSR
+   KEY: TDirectoryFile   highMassCR;1    highMassCR
    ```
 
-   For my version, 2018 mu-tau cut-based categories, and using only one mass point 45 GeV:
+4. With the cut-based categories ("lowMassSR", "mediumMassSR", etc.), and using only one mass point 
    ```bash
-   cd /afs/cern.ch/work/s/skkwan/public/combineArea/CMSSW_11_3_4/src/CombineHarvester/CombineTools/src/AABBTT_allyears
-   cmsenv
-   haabbtt mutau 2018 4 lowMassSR mediumMassSR highMassSR highMassCR
+   Singularity> cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
+   Singularity> python3 makeAsymmCards.py
    ```
 
+   For reference (do not run this), the command for the HIG-22-007 datacards with all channels, years, with a root file containing directories 1 2 3 4 are SR1 SR2 SR3 CR finale m(tt) from 1bjet events after DNN cuts; 5 6 7 are SR1 SR2 CR from 2bjets: is `haabbtt-full mt 2018 7 1 2 3 4 5 6 7`.
    This makes a bunch of text files.
 
-2. Add statistical uncertainties for the backgrounds: 
+   This wrapper `makeAsymmCards.py` script does the following steps:
+   - Runs the `hToA1A2` executable on the specified mass points
+   - Moves the resulting .txt files to the `asymmCards/` folder 
+   - Add statistical uncertainties for the backgrounds like this:
+      ```bash
+      echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_45.txt
+      echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_40.txt
+      ```
+   - Runs `combineCards.py` to combine the `.txt` cards from the three signal region channels, into one .txt file.
+   - Runs  `text2workspace.py` to convert the `.txt` cards to a `RooWorkSpace`.
+   - Runs `combine -M AsymptoticLimits`, either blinded or unblinded. 
+      This prints something like
+      ```bash
+      -- AsymptoticLimits ( CLs ) --
+      Observed Limit: r < 0.0022
+      Expected  2.5%: r < 0.0009
+      Expected 16.0%: r < 0.0013
+      Expected 50.0%: r < 0.0024
+      Expected 84.0%: r < 0.0034
+      Expected 97.5%: r < 0.0046
+      ```
+   - Moves the resulting `higgsCombineTest.AsymptoticLimits*.root` files to `asymmCards/` again.
+   - Runs `hadd` to combine all the mass points into one `RooWorkSpace`. 
+5. Get impacts (only one example mass point necessary):
    ```bash
-   echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_45.txt
-   echo "* autoMCStats 0.0" >> haabbtt_mutau_1_2018_40.txt
+   python3 doImpacts.py
+   ```
+6. (Can be done in parallel with the previous step) Get the post-fit distributions for one mass point: run FitDiagnostics to save shapes and get a RooFitResult, and run PostFitShapesFromWorkspace on the results to get pre-fit and post-fit distributions.
+   ```bash
+   python3 getPostFitDistributions.py
    ```
 
-
-3. Compute the expected limit (-t -1 means expected, blinded): 
-   ```bash
-   combine -M AsymptoticLimits haabbtt_mutau_1_2018_40.txt -t -1 -m 40
-   combine -M AsymptoticLimits haabbtt_mutau_1_2018_45.txt -t -1 -m 45
-   ```
-
-   This gives something like
-   ```bash
-    -- AsymptoticLimits ( CLs ) --
-   Observed Limit: r < 0.0022
-   Expected  2.5%: r < 0.0009
-   Expected 16.0%: r < 0.0013
-   Expected 50.0%: r < 0.0024
-   Expected 84.0%: r < 0.0034
-   Expected 97.5%: r < 0.0046
-   ```
-
-4. If you want to combine several categories, make a combined txt file:
-   `combineCards.py haabbtt_mutau_1_2018_45.txt haabbtt_mutau_2_2018_45.txt haabbtt_mutau_3_2018_45.txt > combined_mutau_2018_45.txt` 
-
-   `combine -M AsymptoticLimits combined_mutau_2018_45.txt -t -1 -m 45`
-
-   This gives something like
-   ```bash
-   -- AsymptoticLimits ( CLs ) --
-   Observed Limit: r < 0.0021
-   Expected  2.5%: r < 0.0009
-   Expected 16.0%: r < 0.0013
-   Expected 50.0%: r < 0.0024
-   Expected 84.0%: r < 0.0034
-   Expected 97.5%: r < 0.0041
-   ```
-
-## Troubleshooting
-
-Using [FitDiagnostics](http://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/):
-
-```bash
-# Inside the cards/ directory
-cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools/cards/
-combine -M FitDiagnostics haabbtt_mutau_3_2018_60.txt -m 60
-
-# Up one directory
-cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
-combine -M FitDiagnostics cards/combined_mutau_2018_60.txt -t -1 -m 60 
-```
-
-Using `diffNuisances.py`:
-```bash
-python diffNuisances.py fitDiagnosticsTest.root
-```
-
-## Datacard validation
-TODO:
-
-## Multi-dimensional fit for debugging
-```bash
-python3 doMultiDimFit.py
-```
-
-## Pulls and impacts
-```bash
-python3 doImpacts.py
-```
-
-## Post-fit distributions
-
-```bash
-python3 getPostFitDistributions.py
-```
-makes `postfitShapes_a1a2_100_15.root`. Need to put this into data/MC.
-
-## For thesis endorsement
-1. `python3 makeAsymmCards.py` to make limits for limit plots for each set of mass points.
-2. `python3 doImpacts.py` for one mass point to get impacts.
-3. (Can be done in parallel with the previous step) `python3 getPostFitDistributions.py` for one mass point, to run FitDiagnostics to save shapes and get a RooFitResult, and run PostFitShapesFromWorkspace on the results to get pre-fit and post-fit distributions.
+   The resulting file should look like this:
    ```bash
    root -l postfitShapes_a1a2_60_20.root
    root [1] .ls
@@ -175,5 +123,38 @@ makes `postfitShapes_a1a2_100_15.root`. Need to put this into data/MC.
    KEY: TDirectoryFile   ch2_postfit;1   ch2_postfit
    KEY: TDirectoryFile   ch3_postfit;1   ch3_postfit
    ```
-4. Plot the post-fit distributions. Copy `postfitShapes_a1a2_60_20.root` to `/eos/user/s/skkwan/www/limits`, and in the LUNA repository in `dataMCPlots/`, run `bash runPostfitPlots.sh`.
-5. Make the goodness of fit data, toys, and plot: `python3 doGoodnessOfFit.py`
+7. Copy the post-fit distributions to a working area:
+   ```bash
+   cp postfitShapes_a1a2_60_20.root /eos/user/s/skkwan/www/limits
+   ```
+   And in the LUNA repository in `dataMCPlots/` run the post-fit plots: 
+   ```bash
+   # cd to LUNA repository dataMCPlots/
+   bash runPostfitPlots.sh
+   ```
+8. Make the goodness of fit data, toys, and plot:
+   ```bash
+   python3 doGoodnessOfFit.py
+   ```
+
+## Troubleshooting
+
+
+- Using [FitDiagnostics](http://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/):
+   ```bash
+   # Inside the cards/ directory
+   cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools/cards/
+   combine -M FitDiagnostics haabbtt_mutau_3_2018_60.txt -m 60
+
+   # Up one directory
+   cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
+   combine -M FitDiagnostics cards/combined_mutau_2018_60.txt -t -1 -m 60 
+   ```
+- Using `diffNuisances.py`:
+   ```bash
+   python diffNuisances.py fitDiagnosticsTest.root
+   ```
+- Multi-dimensional fit for debugging:
+   ```bash
+   python3 doMultiDimFit.py
+   ```
