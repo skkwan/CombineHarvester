@@ -101,12 +101,19 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
       ```
    - Moves the resulting `higgsCombineTest.AsymptoticLimits*.root` files to `asymmCards/` again.
    - Runs `hadd` to combine all the mass points into one `RooWorkSpace`. 
-5. Get impacts (only one example mass point necessary):
+5. Create limit plots. 
+   ```bash
+   cp asymmCards/higgsCombine_a1a2*.root /afs/cern.ch/work/s/skkwan/public/hToA1A2/CMSSW_13_2_6_patch2/src/lunaFramework/limits
+   # then cd to LUNA
+   python3 runLimits.py
+   ```
+6. Get impacts (only one example mass point necessary):
    ```bash
    python3 doImpacts.py
    ```
-6. (Can be done in parallel with the previous step) Get the post-fit distributions for one mass point: run FitDiagnostics to save shapes and get a RooFitResult, and run PostFitShapesFromWorkspace on the results to get pre-fit and post-fit distributions.
+7. (Can be done in parallel with the previous step) Get the post-fit distributions for one mass point: run FitDiagnostics to save shapes and get a RooFitResult, and run PostFitShapesFromWorkspace on the results to get pre-fit and post-fit distributions.
    ```bash
+   # edit channel variable in this file
    python3 getPostFitDistributions.py
    ```
 
@@ -123,16 +130,16 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    KEY: TDirectoryFile   ch2_postfit;1   ch2_postfit
    KEY: TDirectoryFile   ch3_postfit;1   ch3_postfit
    ```
-7. Copy the post-fit distributions to a working area:
-   ```bash
+8. Copy the post-fit distributions to a working area:
+  ```bash
    cp postfitShapes_a1a2_60_20.root /eos/user/s/skkwan/www/limits
    ```
    And in the LUNA repository in `dataMCPlots/` run the post-fit plots: 
    ```bash
    # cd to LUNA repository dataMCPlots/
-   bash runPostfitPlots.sh
+   python3 runPostFitPlots.py
    ```
-8. Make the goodness of fit data, toys, and plot:
+9. Make the goodness of fit data, toys, and plot:
    ```bash
    python3 doGoodnessOfFit.py
    ```
