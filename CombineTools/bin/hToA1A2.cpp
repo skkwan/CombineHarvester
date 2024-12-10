@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
   }
     
   // Where the datacard is stored
-  string aux_shapes = string(getenv("CMSSW_BASE")) + "/src/auxiliaries/shapes/";
+  string aux_shapes = string(getenv("CMSSW_BASE")) + "/src/auxiliaries/shapes" + year + "/";
     
   ch::CombineHarvester cb;
   // Uncomment this next line to see a *lot* of debug information
