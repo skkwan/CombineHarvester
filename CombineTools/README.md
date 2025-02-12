@@ -1,5 +1,18 @@
 # haabbtt Combine
 
+This repository runs on the datacards (`out_mutau.root`, `out_etau.root`, `out_emu.root`) of the [LUNA framework](https://gitlab.cern.ch/skkwan/lunaFramework/-/tree/main?ref_type=heads) and contains all steps involving Combine.
+
+Current status as of January 29, 2025:
+- Works on 2018 for all three channels
+- Currently producing 2017 and 2016 per-channel limits
+- Currently producing year and full Run-2 combinations
+
+## Table of Contents:
+- [Setup](#setup-do-only-once)
+- [To create limits, impacts, and postfit for a single channel](#to-create-limits-impacts-and-postfit-for-one-channel)
+- [To combine three channels into one year](#to-combine-three-channels-into-one-year)
+- [Troubleshooting](#troubleshooting)
+
 ## Setup (do only once)
 
 You need two folders: `HiggsAnalysis/CombinedLimit` which is the Combine tool itself (a command-line interface to many different statistical techniques, available inside RooFits/Roostats), and `CombineHarvester`, which is a framework for the production and analysis of datacards for use with the CMS Combine tool.
@@ -36,12 +49,12 @@ Singularity> git remote rename origin upstream
 Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbtt.git
 ```
 
-## To run Combine 
-1. The main `C++` executable is in `${CMSSW_BASE}/src/CombineHarvester/CombineTools/bin/hToA1A2.cpp`. Note that `BuildFile.xml` must include the line `<bin file="hToA1A2.cpp" name="hToA1A2"></bin>` to build the executable. The input file directory is also specified inside `hToA1A2.cpp`.
+## To create limits, impacts, and postfit for one channel
+1. The main `C++` executable is in [bin/hToA1A2.cpp](bin/hToA1A2.cpp). Note that [bin/BuildFile.xml](bin/BuildFile.xml) must include the line `<bin file="hToA1A2.cpp" name="hToA1A2"></bin>` to build the executable. The input file directory pointing to `out_mutau.root`/`out_etau.root`/`out_emu.root` is also specified inside [bin/hToA1A2.cpp](bin/hToA1A2.cpp).
 
-   The HIG-22-007 h->aa->2b2tau executable lives at `haabbtt-full.cpp` in the same directory.
+   Only for reference, the old HIG-22-007 h->aa->2b2tau executable lives at [bin/haabbtt-full.cpp](bin/haabbtt-full.cpp).
 
-2. After every change, make sure we compile the executables afresh. Make sure `cmssw-el7` is activated:
+2. After every change, make sure we re-compile the executable. Make sure `cmssw-el7` is activated:
    ```bash
    [skkwan@lxplus909 bin]$ cmssw-el7 
    Singularity> cmsenv
@@ -51,7 +64,7 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    Singularity> cd ${CMSSW_BASE}/src
    Singularity> scram b -j 8
    ```
-3. Make sure the histogram `out_mutau.root`, `out_etau.root`, etc. files are copied to `${CMSSW_BASE}/src/auxiliaries/shapes/`. With the LUNA framework, this file is the one produced from `runStackPlots.sh`. 
+3. Make sure the histogram `out_mutau.root`, `out_etau.root`, etc. files are copied to `${CMSSW_BASE}/src/auxiliaries/shapes/`. With the LUNA framework, this file is the one produced from `runBkgEstimation.sh`. 
    The file should have the categories as the top-level folder. The histograms for the variable to fit, should be named like `data_obs`, not `data_obs_m_sv`. For example, this is what one file should look like:
 
    ```bash
@@ -69,17 +82,13 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    KEY: TDirectoryFile   highMassCR;1    highMassCR
    ```
 
-4. With the cut-based categories ("lowMassSR", "mediumMassSR", etc.), and using only one mass point 
+4. With the cut-based categories ("lowMassSR", "mediumMassSR", etc.), and looping over mass points:
    ```bash
    Singularity> cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
    Singularity> python3 makeAsymmCards.py
    ```
-
-   For reference (do not run this), the command for the HIG-22-007 datacards with all channels, years, with a root file containing directories 1 2 3 4 are SR1 SR2 SR3 CR finale m(tt) from 1bjet events after DNN cuts; 5 6 7 are SR1 SR2 CR from 2bjets: is `haabbtt-full mt 2018 7 1 2 3 4 5 6 7`.
-   This makes a bunch of text files.
-
-   This wrapper `makeAsymmCards.py` script does the following steps:
-   - Runs the `hToA1A2` executable on the specified mass points
+   This wrapper [makeAsymmCards.py](makeAsymmCards.py) script does the following steps:
+   - Runs the [bin/hToA1A2.cpp](bin/hToA1A2.cpp) executable on the specified mass points
    - Moves the resulting .txt files to the `asymmCards/` folder 
    - Add statistical uncertainties for the backgrounds like this:
       ```bash
@@ -101,11 +110,11 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
       ```
    - Moves the resulting `higgsCombineTest.AsymptoticLimits*.root` files to `asymmCards/` again.
    - Runs `hadd` to combine all the mass points into one `RooWorkSpace`. 
-5. Create limit plots. 
+5. Next we create limit plots in the LUNA framework.
    ```bash
-   cp asymmCards/higgsCombine_a1a2*.root /afs/cern.ch/work/s/skkwan/public/hToA1A2/CMSSW_13_2_6_patch2/src/lunaFramework/limits
-   # then cd to LUNA
-   python3 runLimits.py
+   cp asymmCards/higgsCombine_a1a2*.root <path to your area>
+   # e.g. cp asymmCards/higgsCombine_a1a2*.root /afs/cern.ch/work/s/skkwan/public/hToA1A2/CMSSW_13_2_6_patch2/src/lunaFramework/limits
+   # then cd to LUNA, use a regular CMSSW area (not cmssw el7, also you don't need the venv activated), and follow instructions there
    ```
 6. Get impacts (only one example mass point necessary):
    ```bash
@@ -130,9 +139,10 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    KEY: TDirectoryFile   ch2_postfit;1   ch2_postfit
    KEY: TDirectoryFile   ch3_postfit;1   ch3_postfit
    ```
-8. Copy the post-fit distributions to a working area:
+8. Copy the post-fit distributions to your working area:
   ```bash
-   cp postfitShapes_a1a2_60_20.root /eos/user/s/skkwan/www/limits
+   cp postfitShapes_a1a2_60_20.root <your working area>
+   # e.g. working area is /eos/user/s/skkwan/www/limits
    ```
    And in the LUNA repository in `dataMCPlots/` run the post-fit plots: 
    ```bash
@@ -144,10 +154,47 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    python3 doGoodnessOfFit.py
    ```
 
+## To combine three channels into one year
+
+1. First you need to have run the previous step for all three tautau channels and all the files should still be in `asymmCards/`.
+2. Next, run [combineCardsForOneYear.py](combineCardsForOneYear.py)
+   ```bash
+   python3 combineCardsForOneYear.py 
+   ```
+3. To plot the limits, follow the prompts and copy the resulting files to your plotting area (in LUNA).
+
 ## Troubleshooting
 
+- In general if Combine seems to not be doing anything, check the print statements for any errors or missing files.
+- The code pipes the expected and measured limits to `asymmCards/limit_*` files, so make sure they contain something like
+   ```bash
+   % cat limits_allchannels_100_15
+       <<< Combine >>> 
+         <<< v9.2.0 >>>
+         >>> Random number generator seed is 123456
+         >>> Method used is AsymptoticLimits
 
-- Using [FitDiagnostics](http://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/):
+         -- AsymptoticLimits ( CLs ) --
+         Observed Limit: r < 1.1997
+         Expected  2.5%: r < 0.6371
+         Expected 16.0%: r < 0.8523
+         Expected 50.0%: r < 1.1992
+         Expected 84.0%: r < 1.7107
+         Expected 97.5%: r < 2.3611
+
+         Done in 1.21 min (cpu), 1.21 min (real)
+   ```
+   If the file is blank/incomplete, 
+   ```bash
+   % cat limits_allchannels_100_15
+   <<< Combine >>> 
+   <<< v9.2.0 >>>
+   >>> Random number generator seed is 123456
+   % 
+   ```
+   That means Combine did not succeed.
+
+- Using [FitDiagnostics](http://cms-analysis.github.io/HiggsAnalysis-CombinedLimit/part3/nonstandard/) to troubleshoot:
    ```bash
    # Inside the cards/ directory
    cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools/cards/
@@ -157,7 +204,7 @@ Singularity> git remote add origin git@github.com:skkwan/CombineHarvester-haabbt
    cd ${CMSSW_BASE}/src/CombineHarvester/CombineTools
    combine -M FitDiagnostics cards/combined_mutau_2018_60.txt -t -1 -m 60 
    ```
-- Using `diffNuisances.py`:
+- Using `diffNuisances.py` to troubleshoot:
    ```bash
    python diffNuisances.py fitDiagnosticsTest.root
    ```
