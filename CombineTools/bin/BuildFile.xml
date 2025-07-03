@@ -1,4 +1,5 @@
-<bin file="Example1.cpp" name="Example1"></bin>
+<bin file="countingExperiment-ZHMET.cpp" name="countingExperiment-ZHMET"></bin>
+<!-- <bin file="Example1.cpp" name="Example1"></bin>
 <bin file="Example2.cpp" name="Example2"></bin>
 <bin file="Example3.cpp" name="Example3"></bin>
 <bin file="GamGamExample.cpp" name="GamGamExample"></bin>
@@ -22,7 +23,7 @@
 <bin file="SMLegacyExample.cpp" name="SMLegacyExample"></bin>
 <bin file="SOBPlot.cpp" name="SOBPlot"></bin>
 <bin file="YieldTable.cpp" name="YieldTable"></bin>
-<bin file="hzz4l.cpp" name="hzz4l"></bin>
+<bin file="hzz4l.cpp" name="hzz4l"></bin> -->
 <use name="root"/>
 <use name="rootmath"/>
 <use name="roofit"/>
