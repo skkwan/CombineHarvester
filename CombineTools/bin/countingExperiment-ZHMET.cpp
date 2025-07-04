@@ -1,5 +1,6 @@
 /*
  * countingExperiment-ZHMET.cpp
+ * Usage (e.g. for (700, 1) mass point): countingExperiment-ZHMET.cpp mm 2018 700 1
  * 
  * Based on CombineHarvester Example2.cpp
  *
@@ -32,8 +33,7 @@ int main(int argc, char** argv) {
     // Create a new CombineHarvester instance
     ch::CombineHarvester cb;
     // Uncomment this next line to see a *lot* of debug information
-    // cb.SetVerbosity(3);
-    
+    cb.SetVerbosity(3);
 
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
@@ -42,26 +42,16 @@ int main(int argc, char** argv) {
         {2, "SR2"}
     };
     // ch::Categories is just a typedef of vector<pair<int, string>>
-    //! [part1]
 
-    //! [part2]
-    // vector<string> masses = ch::MassesFromRange("120-135:5");
-    // Or equivalently, specify the mass points explicitly:
-    //    vector<string> masses = {"120", "125", "130", "135"};
-    // We use mass1 and mass2
-    vector<string> masses = {"TChiZH_700_1", "TChiZH_500_300", "TChiZH_600_300"};
-    //! [part2]
+    vector<string> masses = {"TChiZH_" + mass1 + "_" + mass2};
 
-    
     cb.AddObservations({"*"}, {"zhmet"}, {year}, {channel}, cats);
 
     vector<string> bkg_procs = {"DYJets", "ttbar", "TTZ", "WJets", "diboson"};
     cb.AddProcesses({"*"}, {"zhmet"}, {year}, {channel}, bkg_procs, cats, false);
 
-    // vector<string> sig_ggh = {"TChiZH_" + mass1 + "_" + mass2};
     vector<string> sig_procs = masses;
     cb.AddProcesses(masses, {"zhmet"}, {year}, {channel}, sig_procs, cats, true);
-
 
     // Some of the code for this is in a nested namespace, so
     // we'll make some using declarations first to simplify things a bit.
@@ -92,7 +82,7 @@ int main(int argc, char** argv) {
     std::string outputName = "zhmet_" + year + "_" + channel + ".input.root";
     TFile output(outputName.c_str(), "RECREATE");
     
-    // Finally we iterate through each bin,mass combination and write a datacard
+    // Finally we iterate through each bin, mass combination and write a datacard
     for (auto b : bins) {
         for (auto m : masses) {
           cout << ">> Writing datacard for bin: " << b << " and mass: " << m
@@ -102,7 +92,7 @@ int main(int argc, char** argv) {
           // all the data and backgrounds.
           cb.cp().bin({b}).mass({m, "*"}).WriteDatacard(
               b + "_" + m + ".txt", output);
-        }
+          }
     }
 
 }
