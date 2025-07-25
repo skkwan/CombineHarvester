@@ -1,17 +1,19 @@
 import os 
+from masses import masslist
 
-masses = [
-    # [700, 1], 
-    # [500, 300],
-    [600, 300]
-    ]
+print(masslist)
+# masses = [
+#     [700, 1], 
+#     [500, 300],
+#     [600, 300]
+#     ]
 
-inFile="/eos/cms/store/group/phys_susy/skkwan/condorHistogramming/2025-07-17-22h05m-2018-three-signals-fixed-yield/out_combined_channels.root"
-cardDir="/afs/cern.ch/work/s/skkwan/public/zhmet/CMSSW_14_0_21/src/luna-zhmet/cards/counting-experiment"
+inFile="/eos/cms/store/group/phys_susy/skkwan/condorHistogramming/2025-07-18-00h00m-2018-all-signals-dataMC/out_combined_channels.root"
+cardDir="/eos/cms/store/group/phys_susy/skkwan/zhmet-cards/counting-experiment"
 
 os.system("rm *.txt")
 
-for [m1, m2] in masses:
+for [m1, m2] in masslist:
     os.system(f"countingExperiment-ZHMET {inFile} 2018 {m1} {m2}")
     os.system(f"mv zhmet*.txt {cardDir}")
     print(f">>> Doing per-bin significance for mass points {m1} and {m2}...")
@@ -28,3 +30,5 @@ for [m1, m2] in masses:
     os.system(f"combine -M Significance {cardDir}/{combinedcardname}.txt -t -1 --expectSignal=1")
     # Move this one to a unique name in the cardDir
     os.system(f"mv higgsCombineTest.Significance.mH120.root {cardDir}/higgsCombineTest.Significance.TChiZH_{m1}_{m2}.root")
+
+print(f"Check {cardDir} for files with significance")

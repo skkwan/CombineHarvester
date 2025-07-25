@@ -18,8 +18,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-
-    std::string channel = *(argv + 1);
+    std::string inFile = *(argv + 1);
     std::string year = *(argv + 2);
     // these determine which processes actually go into the signal for each datacard
     std::string mass1 = *(argv + 3);
@@ -28,30 +27,31 @@ int main(int argc, char** argv) {
     //! [part1]
     // Use the CMSSW_BASE environment variable to get the full path to the auxiliaries folder
     // string in_dir = string(getenv("CMSSW_BASE")) + "/src/auxiliaries/datacards/sm/htt_mt/";
-    string in_dir = "/eos/cms/store/group/phys_susy/skkwan/condorHistogramming/2025-07-03-21h38m-2018-mm-binByMT2MET/";
-
+    
     // Create a new CombineHarvester instance
     ch::CombineHarvester cb;
     // Uncomment this next line to see a *lot* of debug information
-    cb.SetVerbosity(3);
+    // cb.SetVerbosity(3);
 
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     ch::Categories cats = {
         {1, "SR1"},
-        {2, "SR2"}
+        {2, "SR2"},
+        // {3, "SR3"},
+        // {4, "SR4"},
     };
     // ch::Categories is just a typedef of vector<pair<int, string>>
 
     vector<string> masses = {"TChiZH_" + mass1 + "_" + mass2};
 
-    cb.AddObservations({"*"}, {"zhmet"}, {year}, {channel}, cats);
+    cb.AddObservations({"*"}, {"zhmet"}, {year}, {"ll"}, cats);
 
     vector<string> bkg_procs = {"DYJets", "ttbar", "TTZ", "WJets", "diboson"};
-    cb.AddProcesses({"*"}, {"zhmet"}, {year}, {channel}, bkg_procs, cats, false);
+    cb.AddProcesses({"*"}, {"zhmet"}, {year}, {"ll"}, bkg_procs, cats, false);
 
     vector<string> sig_procs = masses;
-    cb.AddProcesses(masses, {"zhmet"}, {year}, {channel}, sig_procs, cats, true);
+    cb.AddProcesses(masses, {"zhmet"}, {year}, {"ll"}, sig_procs, cats, true);
 
     // Some of the code for this is in a nested namespace, so
     // we'll make some using declarations first to simplify things a bit.
@@ -62,11 +62,11 @@ int main(int argc, char** argv) {
 
     // Extract from the datacard 
     cb.cp().backgrounds().ExtractShapes(
-        in_dir + "out_"+channel+".root",
+        inFile,
                             "$BIN/$PROCESS",
                             "$BIN/$PROCESS_$SYSTEMATIC");
     cb.cp().signals().ExtractShapes(
-        in_dir + "out_"+channel+".root",
+        inFile,
                         "$BIN/$PROCESS",
                         "$BIN/$PROCESS_$SYSTEMATIC");
 
@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
     set<string> bins = cb.bin_set();
 
     // Create the output ROOT file that will contain all the shapes
-    std::string outputName = "zhmet_" + year + "_" + channel + ".input.root";
+    std::string outputName = "zhmet_" + year + ".input.root";
     TFile output(outputName.c_str(), "RECREATE");
     
     // Finally we iterate through each bin, mass combination and write a datacard
