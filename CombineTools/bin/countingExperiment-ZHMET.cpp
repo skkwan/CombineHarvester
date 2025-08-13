@@ -36,8 +36,7 @@ int main(int argc, char** argv) {
     // Here we will just define two categories for an 8TeV analysis. Each entry in
     // the vector below specifies a bin name and corresponding bin_id.
     ch::Categories cats = {
-        {1, "SR1"},
-        {2, "SR2"},
+        {1, "SR_1bin_METgt200_MT2gt175"},
         // {3, "SR3"},
         // {4, "SR4"},
     };
@@ -45,13 +44,13 @@ int main(int argc, char** argv) {
 
     vector<string> masses = {"TChiZH_" + mass1 + "_" + mass2};
 
-    cb.AddObservations({"*"}, {"zhmet"}, {year}, {"ll"}, cats);
+    cb.AddObservations({"*"}, {"zhmet"}, {year}, {"m_bb"}, cats);
 
-    vector<string> bkg_procs = {"DYJets", "ttbar", "TTZ", "WJets", "diboson"};
-    cb.AddProcesses({"*"}, {"zhmet"}, {year}, {"ll"}, bkg_procs, cats, false);
+    vector<string> bkg_procs = {"DYJets", "WJets", "ttbar", "TTZ", "VH", "ZZ", "WV"};
+    cb.AddProcesses({"*"}, {"zhmet"}, {year}, {"m_bb"}, bkg_procs, cats, false);
 
     vector<string> sig_procs = masses;
-    cb.AddProcesses(masses, {"zhmet"}, {year}, {"ll"}, sig_procs, cats, true);
+    cb.AddProcesses(masses, {"zhmet"}, {year}, {"m_bb"}, sig_procs, cats, true);
 
     // Some of the code for this is in a nested namespace, so
     // we'll make some using declarations first to simplify things a bit.
